@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import gfx.Camera;
 import gfx.ImgAssets;
 import input.KeyManager;
+import input.MouseManager;
 import states.GameState;
 import states.MainMenuState;
 import states.SettingState;
@@ -51,9 +52,11 @@ public class Game implements Runnable {
 	private State gameState;		//the game sub-window: game
 	private State mainMenuState;	//the game sub-window: menu
 	private State settingState;		//the game sub-window: settings
+	private State shopState;		//the game sub-window: shop
 	
 	//input
 	private KeyManager keyManager;
+	private MouseManager mouseManager;
 	
 	//camera
 	private Camera camera;
@@ -82,8 +85,15 @@ public class Game implements Runnable {
 		
 		//init new Keymanager ==> used in Player, make logic for this Frame's Listener
 		keyManager = new KeyManager();
+		mouseManager = new MouseManager();
 		
 		fr_g.addKeyListener(keyManager);
+		
+		fr_g.addMouseListener(mouseManager);
+		fr_g.addMouseMotionListener(mouseManager);
+		
+		fr_g.getCanvas().addMouseListener(mouseManager);
+		fr_g.getCanvas().addMouseMotionListener(mouseManager);
 		
 		//assign camera
 		camera = new Camera(handler, 0, 0);
@@ -199,6 +209,11 @@ public class Game implements Runnable {
 	public KeyManager getKeyManager() {
 		return this.keyManager;
 	}
+	
+	//get the mouseManager
+		public MouseManager getMouseManager() {
+			return this.mouseManager;
+		}
 	
 	//get the camera: control or get the offset of the camera in another class by using this
 	public Camera getCamera() {

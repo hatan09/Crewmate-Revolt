@@ -14,6 +14,8 @@ public abstract class Creature extends Entity{
 	protected int health;
 	protected float speed;
 	protected float xMove, yMove;
+	
+	protected boolean penetrating = false;
 
 	
 	public Creature(Handler handler, float x, float y, int width, int height){

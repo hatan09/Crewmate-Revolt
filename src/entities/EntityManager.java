@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import entities.creatures.Creature;
 import entities.creatures.Player;
@@ -12,41 +13,41 @@ import main.Handler;
 public class EntityManager {
 
 	private Handler handler;
-	private ArrayList<Creature> creatures;
-	private ArrayList<StaticEntity> staticEntities;
+	
+	private ArrayList<Entity> entities;
 	private ArrayList<SolidEntity> solidEntities;
 	private Player player;
+	
+	Comparator<Entity> renderOrder = new Comparator<Entity>() {
+		@Override
+		public int compare(Entity a, Entity b) {
+			if(a.getHeight() + a.y < b.getHeight() + b.y ) {
+				return -1;
+			}
+			return 1;
+		}
+	};
 	
 	public EntityManager(Handler handler, Player player) {
 		this.player = player;
 		
-		creatures = new ArrayList<Creature>();
-		staticEntities = new ArrayList<StaticEntity>();
+		entities = new ArrayList<Entity>();
 		solidEntities = new ArrayList<SolidEntity>();
 		
-		addCreature(player);
+		entities.add(player);
+		entities.addAll(solidEntities);
+		
 	}
 	
-	public void update() {
-		for(Entity e : creatures) {
+	public void update() {		
+		for(Entity e : entities) {
 			e.update();
 		}
-		for(Entity e: staticEntities) {
-			e.update();
-		}
-		for(Entity e : solidEntities) {
-			e.update();
-		}
+		entities.sort(renderOrder);
 	}
 	
 	public void render(Graphics g) {
-		for(Entity e : creatures) {
-			e.render(g);
-		}
-		for(Entity e: staticEntities) {
-			e.render(g);
-		}
-		for(Entity e : solidEntities) {
+		for(Entity e : entities) {
 			e.render(g);
 		}
 	}
@@ -55,30 +56,32 @@ public class EntityManager {
 	//GETTERS & SETTERS
 	
 	
-	public void addCreature(Creature c) {
-		creatures.add(c);
-	}
-	
-	public void addMultipleCreatures(Creature[] cs) {
-		for(Creature c : cs) creatures.add(c);
-	}
-	
-	public void addStaticEntity(StaticEntity se) {
-		staticEntities.add(se);
-	}
-	
-	public void addMultipleStaticEntities(StaticEntity[] ses) {
-		for(StaticEntity se : ses) staticEntities.add(se);
-	}
-	
 	public void addSolidEntity(SolidEntity se) {
 		solidEntities.add(se);
+		entities.add(se);
 	}
 	
-	public void addMultipleSolidEntities(SolidEntity[] ses) {
-		for(SolidEntity se : ses) solidEntities.add(se);
+	public void addMultipleSolidEntities(ArrayList<SolidEntity> ses) {
+		solidEntities.addAll(ses);
+		entities.addAll(ses);
 	}
 	
+	public void removeSolidEntity(SolidEntity se) {
+		solidEntities.remove(se);
+		entities.remove(se);
+	}
+	
+	public void addEntity(Entity e) {
+		entities.add(e);
+	}
+	
+	public void addMultipleEntities(ArrayList<Entity> es) {
+		entities.addAll(es);
+	}
+	
+	public void removeEnity(Entity e) {
+		entities.remove(e);
+	}
 	
 	public Handler getHandler() {
 		return handler;
@@ -96,20 +99,12 @@ public class EntityManager {
 		this.player = player;
 	}
 
-	public ArrayList<Creature> getCreatures() {
-		return creatures;
+	public ArrayList<Entity> getEntities() {
+		return entities;
 	}
 
-	public void setCreatures(ArrayList<Creature> creatures) {
-		this.creatures = creatures;
-	}
-
-	public ArrayList<StaticEntity> getStaticEntities() {
-		return staticEntities;
-	}
-
-	public void setStaticEntities(ArrayList<StaticEntity> staticEntities) {
-		this.staticEntities = staticEntities;
+	public void setEntities(ArrayList<Entity> entities) {
+		this.entities = entities;
 	}
 
 	public ArrayList<SolidEntity> getSolidEntities() {

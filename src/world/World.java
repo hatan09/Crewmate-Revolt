@@ -40,20 +40,21 @@ public class World {
 		
 		eManager = new EntityManager(handler, new Player(handler, spawnX * Tile.TILE_HEIGHT, spawnY * Tile.TILE_HEIGHT, player_width, player_height));
 		
-		tree1 = new Tree(handler, 500, 500, 127, 165);
+		//eManager.addStaticEntity(tree1);
 		
-		eManager.addStaticEntity(tree1);
+		tree1 = new Tree(handler, 500, 500, 127, 165);
 		
 		rock1 = new Rock(handler, 1000, 200, 127, 165);
 		
 		eManager.addSolidEntity(rock1);
+		eManager.addSolidEntity(tree1);
 	}
 	
 	public void update() {
 		eManager.update();
 	}
 	
-	public void render(Graphics g) {
+	public void render(Graphics g) {		
 		int xStart = (int) Math.max(0, handler.getCamera().getxOffset() / Tile.TILE_WIDTH);
 		int xEnd = (int) Math.min(width, (handler.getCamera().getxOffset() + handler.getGameWidth()) / Tile.TILE_WIDTH + 1);
 		int yStart = (int) Math.max(0, handler.getCamera().getyOffset() / Tile.TILE_HEIGHT);

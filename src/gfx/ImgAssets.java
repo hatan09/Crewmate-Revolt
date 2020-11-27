@@ -12,7 +12,7 @@ public class ImgAssets {
 	private static final int WIDTH = 32, HEIGHT = 32; //the size of the tile's images when cropping out of the sprite sheet
 	private static final int PLAYER_WIDTH = 59, PLAYER_HEIGHT = 89; //the size of the player's images when cropping out of the sprite sheet
 
-	public static BufferedImage player_static_left, player_static_right, grass, water, dirt, sand, logo, tree1;
+	public static BufferedImage player_static_left, player_static_right, grass, water, dirt, sand, logo, tree1, gun_right, gun_left;
 	
 	public static BufferedImage[] player_running_left = new BufferedImage[6];
 	public static BufferedImage[] player_running_right = new BufferedImage[6];
@@ -48,6 +48,12 @@ public class ImgAssets {
 		
 		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/tree1.png"));
 		tree1 = sheet.crop(0, 0, 127, 165);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/gun_right.png"));
+		gun_right = sheet.crop(0, 0, 240, 240);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/gun_left.png"));
+		gun_left = sheet.crop(0, 0, 240, 240);
 		
 		//sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/tile.jpg"));
 		//grass = sheet.crop(0, 0, width, height);

@@ -31,7 +31,6 @@ public class KeyManager implements KeyListener{
 		down = keys[downNum];
 		left = keys[leftNum];
 		right = keys[rightNum];
-		
 	}
 	
 	public void setUp(int num) {
