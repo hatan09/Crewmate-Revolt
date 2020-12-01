@@ -1,4 +1,4 @@
-package interfaces;
+package zombie;
 
 public interface Zombie {
 
