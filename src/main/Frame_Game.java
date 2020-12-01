@@ -1,7 +1,11 @@
 package main;
 
 import java.awt.Canvas;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -19,15 +23,22 @@ public class Frame_Game extends JFrame{
 	private String title;
 	private Canvas canvas;
 	
-	//default windows size for game
-	private final Dimension DEFAULT_SIZE = new Dimension(500, 500);
+	//toolkit
+	private Toolkit toolkit;
+	private Image cursorImage;
+	private Cursor cursor;
 	
 	public Frame_Game(String title, Dimension d) {
+		toolkit = Toolkit.getDefaultToolkit();
+		cursorImage = toolkit.getImage("res/img/crosshair2.png");
+		cursor = toolkit.createCustomCursor(cursorImage , new Point(this.getX(), this.getY()), "img");
+		
 		this.title = title;
 		setSize(d);
 		setTitle(this.title);
 		setResizable(false);
 		setLocationRelativeTo(null);
+		setCursor(cursor);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -54,7 +65,7 @@ public class Frame_Game extends JFrame{
 		
 		setVisible(true);
 		
-		//fullScreen();
+		fullScreen();
 	}
 	
 	public void reFresh() {

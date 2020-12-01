@@ -151,7 +151,7 @@ public class World {
 	}
 	
 	
-	//	SETTERS, GETTERS
+	//GETTERS & SETTERS
 
 	public EntityManager geteManager() {
 		return eManager;

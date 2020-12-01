@@ -12,7 +12,7 @@ public abstract class State {
 		this.handler = handler;
 	}
 
-	//State Manager
+	//State Manager: static var and static method used to set and get current state of the whole game
 	private static State _state = null;
 	
 	public static void setState(State state) {
@@ -23,9 +23,9 @@ public abstract class State {
 		return _state;
 	}
 	
-	//methods that all States have
-	public abstract void render(Graphics g);
-	
+	//methods that all States must have
 	public abstract void update();
+	
+	public abstract void render(Graphics g);
 	
 }

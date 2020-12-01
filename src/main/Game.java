@@ -49,7 +49,7 @@ public class Game implements Runnable {
 	private double timePerFrame;	//in nanoSeconds -- it keeps the time between 2 continuous frame
 	
 	//states
-	private State gameState;		//the game sub-window: game
+	public State gameState;		//the game sub-window: game
 	private State mainMenuState;	//the game sub-window: menu
 	private State settingState;		//the game sub-window: settings
 	private State shopState;		//the game sub-window: shop
@@ -75,8 +75,6 @@ public class Game implements Runnable {
 	
 	//get things ready
 	private void init() {
-		
-		
 		//init new JFrame then show it
 		fr_g = new Frame_Game("Zombie Shooter (Version 1.0.0 - Beta)", new Dimension(width, height));
 		
@@ -104,7 +102,7 @@ public class Game implements Runnable {
 		gameState = new GameState(handler);
 		mainMenuState = new MainMenuState(handler);
 		settingState = new SettingState(handler);
-		State.setState(gameState);
+		State.setState(mainMenuState);
 		
 		timePerUpdate = 1000000000/update_limit;		//1 (s) = 10^9 (ns)
 		timePerFrame = 1000000000/fps;
@@ -142,26 +140,25 @@ public class Game implements Runnable {
 
 	}
 	
-	private void renderLogo() {
+	public void renderLogo() {
 		bs = fr_g.getCanvas().getBufferStrategy();
 		
 		//if there is no bs yet -> create
 		if(bs == null) {
 			fr_g.getCanvas().createBufferStrategy(3);
-			return;
+			bs = fr_g.getCanvas().getBufferStrategy();
 		}
-		else {
-			g = bs.getDrawGraphics();
+		g = bs.getDrawGraphics();
 		
-			//draw
-			g.clearRect(0, 0, width, height);
-			g.setColor(Color.black);
-			g.fillRect(0, 0, width, height);
-			g.drawImage(ImgAssets.logo, width/2 - 316, height/2 - 316, null);
-			//render
-			bs.show();
-			g.dispose();
-		}
+		//draw
+		g.clearRect(0, 0, width, height);
+		g.setColor(Color.black);
+		g.fillRect(0, 0, width, height);
+		g.drawImage(ImgAssets.logo, width/2 - ImgAssets.logo.getWidth() / 2, height/2 - ImgAssets.logo.getHeight() / 2, null);
+		
+		//render
+		bs.show();
+		g.dispose();
 		
 	}
 	
