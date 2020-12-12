@@ -85,6 +85,7 @@ public class Game implements Runnable {
 		keyManager = new KeyManager();
 		mouseManager = new MouseManager();
 		
+		//by doing this, our frame and canvas can get key and mouse events
 		fr_g.addKeyListener(keyManager);
 		
 		fr_g.addMouseListener(mouseManager);
@@ -102,7 +103,7 @@ public class Game implements Runnable {
 		gameState = new GameState(handler);
 		mainMenuState = new MainMenuState(handler);
 		settingState = new SettingState(handler);
-		State.setState(mainMenuState);
+		setMenuState();
 		
 		timePerUpdate = 1000000000/update_limit;		//1 (s) = 10^9 (ns)
 		timePerFrame = 1000000000/fps;
@@ -166,14 +167,6 @@ public class Game implements Runnable {
 	public void run() {
 		init();
 		
-		  //show logo 
-			
-			/*
-			 * renderLogo(); renderLogo(); renderLogo(); try {
-			 * Thread.sleep(logoDelay); } catch (InterruptedException e) {
-			 * e.printStackTrace(); }
-			 */
-		
 		lastTime = System.nanoTime();
 		while(isRunning) {
 			now = System.nanoTime();
@@ -208,9 +201,9 @@ public class Game implements Runnable {
 	}
 	
 	//get the mouseManager
-		public MouseManager getMouseManager() {
-			return this.mouseManager;
-		}
+	public MouseManager getMouseManager() {
+		return this.mouseManager;
+	}
 	
 	//get the camera: control or get the offset of the camera in another class by using this
 	public Camera getCamera() {
@@ -243,16 +236,40 @@ public class Game implements Runnable {
 		}
 	}
 	
+	//call to stop everything
 	public void stopGame() {
 		isRunning = false;
 	}
 	
+	//change the state to game
+	public void setGameState() {
+		gameState.reset();
+		State.setState(gameState);
+	}
+	
+	//change the state to menu
+	public void setMenuState() {
+		State.setState(mainMenuState);
+	}
+		
+	//change the state to shop
+	public void setShopState() {
+		State.setState(shopState);
+	}
+	
+	//change the state to setting
+	public void setSettingState() {
+		State.setState(settingState);
+	}
+	
+	//set new fps
 	public void setNewFPS(int fps) {
 		if(fps > 0) {
 			this.fps = fps;
 		}
 	}
 
+	//get window's width
 	public int getWidth() {
 		return width;
 	}
@@ -262,6 +279,7 @@ public class Game implements Runnable {
 		System.out.println(this.width);
 	}
 
+	//get window's height
 	public int getHeight() {
 		return height;
 	}

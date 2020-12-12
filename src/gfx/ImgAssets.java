@@ -18,7 +18,8 @@ public class ImgAssets {
 	public static BufferedImage player_static_left, player_static_right, grass, water, dirt, sand, logo, tree1, gun_right, gun_left;
 	
 	
-	public static BufferedImage[] start_btn = new BufferedImage[2];
+	public static BufferedImage[] start_btn = new BufferedImage[2], shop_btn = new BufferedImage[2], setting_btn = new BufferedImage[2];
+	public static BufferedImage[] resume_btn = new BufferedImage[2], quit_btn = new BufferedImage[2];
 	
 	public static BufferedImage[] player_running_left = new BufferedImage[6];
 	public static BufferedImage[] player_running_right = new BufferedImage[6];
@@ -64,11 +65,35 @@ public class ImgAssets {
 		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/menu_background.png"));
 		menu = sheet.crop(0, 0, 1920, 1080);
 		
-		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/black_tile.jpg"));
-		start_btn[0] = sheet.crop(0, 0, 150, 50);
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/start_btn.png"));
+		start_btn[0] = sheet.crop(0, 0, 612, 237);
 		
-		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/sand_tile.jpg"));
-		start_btn[1] = sheet.crop(0, 0, 150, 50);
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/start_btn_hv.png"));
+		start_btn[1] = sheet.crop(0, 0, 612, 237);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/shop_btn.png"));
+		shop_btn[0] = sheet.crop(0, 0, 417, 191);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/shop_btn_hv.png"));
+		shop_btn[1] = sheet.crop(0, 0, 417, 191);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/setting_btn.png"));
+		setting_btn[0] = sheet.crop(0, 0, 171, 150);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/setting_btn_hv.png"));
+		setting_btn[1] = sheet.crop(0, 0, 171, 150);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/setting_btn.png"));
+		resume_btn[0] = sheet.crop(0, 0, 171, 150);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/setting_btn_hv.png"));
+		resume_btn[1] = sheet.crop(0, 0, 171, 150);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/setting_btn.png"));
+		quit_btn[0] = sheet.crop(0, 0, 171, 150);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/setting_btn_hv.png"));
+		quit_btn[1] = sheet.crop(0, 0, 171, 150);
 		
 		//sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/tile.jpg"));
 		//grass = sheet.crop(0, 0, width, height);

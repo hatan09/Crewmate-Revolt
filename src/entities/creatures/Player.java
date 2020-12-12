@@ -143,7 +143,8 @@ public class Player extends Creature{
 
 		//g.fillRect((int) (x - handler.getCamera().getxOffset() + box.x), (int) (y - handler.getCamera().getyOffset() + box.y), box.width,  box.height);
 		
-		g.drawImage(op.filter(hands, null), (int) (x - handler.getCamera().getxOffset() - (hands.getWidth() - getWidth()) / 2), (int) (5 + y - handler.getCamera().getyOffset() - (hands.getHeight() - getHeight()) / 2), op.filter(hands, null).getWidth(),  op.filter(hands, null).getHeight(), null);
+		if(op != null)
+			g.drawImage(op.filter(hands, null), (int) (x - handler.getCamera().getxOffset() - (hands.getWidth() - getWidth()) / 2), (int) (5 + y - handler.getCamera().getyOffset() - (hands.getHeight() - getHeight()) / 2), op.filter(hands, null).getWidth(),  op.filter(hands, null).getHeight(), null);
 	}
 	
 	public BufferedImage getFrame() {

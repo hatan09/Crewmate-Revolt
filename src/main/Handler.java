@@ -1,8 +1,5 @@
 package main;
 
-import java.awt.MouseInfo;
-import java.awt.Point;
-
 import gfx.Camera;
 import input.KeyManager;
 import input.MouseManager;
@@ -46,9 +43,6 @@ public class Handler {
 		return game.getCamera();
 	}
 	
-	public Point getCurorPosition() {
-		return MouseInfo.getPointerInfo().getLocation();
-	}
 	
 	//SETTERS, GETTERS
 	

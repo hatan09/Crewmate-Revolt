@@ -14,9 +14,9 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 	
 	public MouseManager() {
 		
-		
 	}
 	
+	//make mouseListener listen to this UI besides the component that has this class as a mouseListener
 	public void setUIManager(UIManager uiManager) {
 		this.uiManager = uiManager;
 	}
@@ -44,7 +44,6 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -53,6 +52,7 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 		mouseX = e.getX();
 		mouseY = e.getY();
 		
+		//besides setting new values read from the cursor's position, we update the UI's values
 		if(uiManager != null) {
 			uiManager.onMouseMove(e);
 		}
@@ -60,7 +60,6 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -79,6 +78,7 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 		else if(e.getButton() == MouseEvent.BUTTON3)
 			mouseRight = false;
 		
+		//besides setting new values when the user releases the mouse button, we also tell the UI that this event occured
 		if(uiManager != null) {
 			uiManager.onMouseRelease(e);
 		}
@@ -86,13 +86,11 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
