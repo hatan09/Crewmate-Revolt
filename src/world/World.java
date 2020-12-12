@@ -36,18 +36,8 @@ public class World {
 
 	public World(Handler handler, String path) {
 		this.handler = handler;
-		loadWorld(path);
 		
-		eManager = new EntityManager(handler, new Player(handler, spawnX * Tile.TILE_HEIGHT, spawnY * Tile.TILE_HEIGHT, player_width, player_height));
-		
-		//eManager.addStaticEntity(tree1);
-		
-		tree1 = new Tree(handler, 500, 500, 127, 165);
-		
-		rock1 = new Rock(handler, 1000, 200, 127, 165);
-		
-		eManager.addSolidEntity(rock1);
-		eManager.addSolidEntity(tree1);
+		reset(path);
 	}
 	
 	public void update() {
@@ -148,6 +138,21 @@ public class World {
 				map[y][x] = Utils.parseInt(tokens[4 + x + y * width]);
 			}
 		}
+	}
+	
+	public void reset(String path) {
+		loadWorld(path);
+		
+		eManager = new EntityManager(handler, new Player(handler, spawnX * Tile.TILE_HEIGHT, spawnY * Tile.TILE_HEIGHT, player_width, player_height));
+		
+		//eManager.addStaticEntity(tree1);
+		
+		tree1 = new Tree(handler, 500, 500, 127, 165);
+		
+		rock1 = new Rock(handler, 1000, 200, 127, 165);
+		
+		eManager.addSolidEntity(rock1);
+		eManager.addSolidEntity(tree1);
 	}
 	
 	
