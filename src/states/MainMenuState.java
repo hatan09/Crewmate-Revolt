@@ -11,7 +11,7 @@ import main.Handler;
 public class MainMenuState extends State{
 	private int mouseX, mouseY;
 	private int windowW, windowH;
-	private int backgoundW = 1920, backgroundH = 1080;
+	private int backgoundW = ImgAssets.menu.getWidth(), backgroundH = ImgAssets.menu.getHeight();
 	private long lastTime = 0;
 	private long timer;
 	

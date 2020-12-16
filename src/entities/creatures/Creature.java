@@ -14,6 +14,7 @@ public abstract class Creature extends Entity{
 	protected int health;
 	protected float speed;
 	protected float xMove, yMove;
+	protected boolean headingRight = true;
 	
 	protected boolean penetrating = false;
 
@@ -100,6 +101,21 @@ public abstract class Creature extends Entity{
 			if(e.getCollisionBox(0f, 0f).intersects(getCollisionBox(dx, dy))) return true;
 		}
 		return false;
+	}
+	
+	public void takeDmg(int dmg) {
+		health -= dmg;
+		if(health <= 0) {
+			handler.getWorld().geteManager().removeCreature(this);
+		}
+	}
+	
+	public void shoot() {
+		
+	}
+	
+	public void melee() {
+		
 	}
 	
 	//setter & getter

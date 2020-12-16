@@ -5,23 +5,24 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+import data.Gun;
 import gfx.Animation;
 import gfx.ImgAssets;
 import main.Handler;
 
 public class Player extends Creature{
-	private int anim_spd = 78;
+	private static final int ANIM_SPD = 78;
 	private double angle;
-	long last_time = 0;
+	long lastTime = 0;
 	long timer = 0;
 	
-	int v1x = 0, v1y = 1, v2x = 50, v2y = -50;
-	double test_angle;
+	private Gun curr;
+	private Gun next;
 	
 	private float acc = 0.3f;
 	private int stamina;
-	private boolean headingRight = true;
 	private boolean isMoving = false;
+	private boolean isShooting = false;
 	
 	private int mouseX, mouseY;
 	private AffineTransform tx;
@@ -35,10 +36,10 @@ public class Player extends Creature{
 		
 		box.setBounds(15, 60, 57, 57);
 		
-		anim_run_left = new Animation(anim_spd, ImgAssets.player_running_left);
-		anim_run_right = new Animation(anim_spd, ImgAssets.player_running_right);
+		anim_run_left = new Animation(ANIM_SPD, ImgAssets.player_running_left);
+		anim_run_right = new Animation(ANIM_SPD, ImgAssets.player_running_right);
 		
-		test_angle = Math.acos((double) (v1y*v1y) / (v1y * Math.sqrt(v2x*v2x + v2y*v2y))); 
+		curr = new Gun(1, "", 30, 1000, 3, 3);
 	}
 	
 	public void getInput() {
@@ -77,6 +78,7 @@ public class Player extends Creature{
 		
 		mouseX = handler.getMouseManager().getMouseX();
 		mouseY = handler.getMouseManager().getMouseY();
+		isShooting = handler.getMouseManager().isPressingLeft();
 	}
 	
 	private void rotateHands(int x, int y) {
@@ -104,15 +106,20 @@ public class Player extends Creature{
 
 	@Override
 	public void update() {
-		//get key input
+		//get mouse & key input
 		getInput();
 		
-
-		/*
-		 * timer += System.nanoTime() - last_time; last_time = System.nanoTime();
-		 * if(timer >= 1000000000) { if(angle >= 90) angle = -90; else angle += 10;
-		 * timer = 0; }
-		 */
+		if(isShooting) {
+			timer += System.currentTimeMillis() - lastTime;
+			lastTime = System.currentTimeMillis();
+			if(timer >= curr.getSpeed()) {
+				shoot();
+				timer = 0;
+			}
+		}
+		else timer = 0;
+		
+		
 		
 		if(isMoving) {
 			anim_run_left.update();
