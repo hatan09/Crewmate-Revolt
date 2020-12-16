@@ -34,6 +34,8 @@ public abstract class Entity {
 	public Rectangle getCollisionBox(float dx, float dy) {
 		return new Rectangle((int) (x + box.x + dx) , (int) (y + box.y + dy), box.width, box.height);
 	}
+	
+	public abstract void takeDmg(int dmg);
 
 	
 	//setter & getter

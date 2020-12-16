@@ -2,6 +2,8 @@ package world;
 
 import java.awt.Graphics;
 
+import bullets.Bullet;
+import bullets.BulletController;
 import entities.EntityManager;
 import entities.creatures.Player;
 import entities.statics.Tree;
@@ -33,6 +35,8 @@ public class World {
 	private Rock rock1;
 	
 	private EntityManager eManager;
+	
+	private BulletController bController;
 
 	public World(Handler handler, String path) {
 		this.handler = handler;
@@ -145,7 +149,7 @@ public class World {
 		
 		eManager = new EntityManager(handler, new Player(handler, spawnX * Tile.TILE_HEIGHT, spawnY * Tile.TILE_HEIGHT, player_width, player_height));
 		
-		//eManager.addStaticEntity(tree1);
+		//eManager.addStaticEntity(bush);
 		
 		tree1 = new Tree(handler, 500, 500, 127, 165);
 		
@@ -153,6 +157,8 @@ public class World {
 		
 		eManager.addSolidEntity(rock1);
 		eManager.addSolidEntity(tree1);
+		
+		bController = new BulletController(handler);
 	}
 	
 	
@@ -160,6 +166,14 @@ public class World {
 
 	public EntityManager geteManager() {
 		return eManager;
+	}
+	
+	public BulletController getbController() {
+		return bController;
+	}
+	
+	public void addBullet(Bullet b) {
+		bController.addBullet(b);
 	}
 
 	public int getSpawnX() {

@@ -16,6 +16,8 @@ public class EntityManager {
 	
 	private ArrayList<Entity> entities;
 	private ArrayList<SolidEntity> solidEntities;
+	private ArrayList<StaticEntity> staticEntities;
+	private ArrayList<Creature> creatures;
 	private Player player;
 	
 	Comparator<Entity> renderOrder = new Comparator<Entity>() {
@@ -33,10 +35,10 @@ public class EntityManager {
 		
 		entities = new ArrayList<Entity>();
 		solidEntities = new ArrayList<SolidEntity>();
+		staticEntities = new ArrayList<StaticEntity>();
+		creatures = new ArrayList<Creature>();
 		
-		entities.add(player);
-		entities.addAll(solidEntities);
-		
+		addCreature(player);
 	}
 	
 	public void update() {		
@@ -56,6 +58,21 @@ public class EntityManager {
 	//GETTERS & SETTERS
 	
 	
+	public void addCreature(Creature cr) {
+		creatures.add(cr);
+		entities.add(cr);
+	}
+	
+	public void addMultipleCreature(ArrayList<Creature> crs) {
+		creatures.addAll(crs);
+		entities.addAll(crs);
+	}
+	
+	public void removeCreature(Creature cr) {
+		creatures.remove(cr);
+		entities.remove(cr);
+	}
+	
 	public void addSolidEntity(SolidEntity se) {
 		solidEntities.add(se);
 		entities.add(se);
@@ -71,18 +88,25 @@ public class EntityManager {
 		entities.remove(se);
 	}
 	
-	public void addEntity(Entity e) {
-		entities.add(e);
+	public void addStaticEntity(StaticEntity se) {
+		staticEntities.add(se);
+		entities.add(se);
 	}
 	
-	public void addMultipleEntities(ArrayList<Entity> es) {
-		entities.addAll(es);
+	public void addMultipleStaticEntities(ArrayList<StaticEntity> ses) {
+		staticEntities.addAll(ses);
+		entities.addAll(ses);
 	}
 	
-	public void removeEnity(Entity e) {
-		entities.remove(e);
+	public void removeStaticEntity(StaticEntity se) {
+		staticEntities.remove(se);
+		entities.remove(se);
 	}
 	
+	public ArrayList<Creature> getCreatures() {
+		return creatures;
+	}
+
 	public Handler getHandler() {
 		return handler;
 	}
@@ -103,16 +127,8 @@ public class EntityManager {
 		return entities;
 	}
 
-	public void setEntities(ArrayList<Entity> entities) {
-		this.entities = entities;
-	}
-
 	public ArrayList<SolidEntity> getSolidEntities() {
 		return solidEntities;
-	}
-
-	public void setSolidEntities(ArrayList<SolidEntity> solidEntities) {
-		this.solidEntities = solidEntities;
 	}
 	
 }

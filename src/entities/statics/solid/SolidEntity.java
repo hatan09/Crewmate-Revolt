@@ -11,16 +11,19 @@ public class SolidEntity extends StaticEntity{
 		super(handler, x, y, width, height);
 		// TODO Auto-generated constructor stub
 	}
+	
+	@Override
+	public void takeDmg(int dmg) {
+		
+	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void render(Graphics g) {
-		// TODO Auto-generated method stub
 		
 	}
 

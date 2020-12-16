@@ -27,8 +27,14 @@ public class GUI_Working_Login extends GUI_Login implements ActionListener, Mous
 		btn_login.addActionListener(this);
 		btn_lost.addActionListener(this);
 		btn_reg.addActionListener(this);
+		btn_go_reg.addActionListener(this);
+		btn_log_hide.addActionListener(this);
+		btn_log_show.addActionListener(this);
+		btn_reg_hide.addActionListener(this);
+		btn_reg_show.addActionListener(this);
+		
 		//add update listener to textfields
-		pf_pass.addActionListener(new ActionListener() {		
+		pf_log_pass.addActionListener(new ActionListener() {		
 		@Override
 			public void actionPerformed(ActionEvent e) {	//catch enter
 				btn_login.doClick();
@@ -119,6 +125,42 @@ public class GUI_Working_Login extends GUI_Login implements ActionListener, Mous
 			else {
 				JOptionPane.showMessageDialog(null, "Canceled!");
 			}
+		}
+		
+		if(btn == btn_log_hide) {
+			add(btn_log_show, Integer.valueOf(3));
+			remove(btn_log_hide);
+			String tmp = tf_log_pass.getText();
+			pf_log_pass.setText(tmp);
+			add(pf_log_pass, Integer.valueOf(2));
+			remove(tf_log_pass);
+		}
+		
+		if(btn == btn_log_show) {
+			add(btn_log_hide, Integer.valueOf(3));
+			remove(btn_log_show);
+			String tmp = pf_log_pass.getText();
+			tf_log_pass.setText(tmp);
+			add(tf_log_pass, Integer.valueOf(2));
+			remove(pf_log_pass);
+		}
+		
+		if(btn == btn_reg_hide) {
+			add(btn_reg_show, Integer.valueOf(3));
+			remove(btn_reg_hide);
+			String tmp = tf_reg_pass.getText();
+			pf_reg_pass.setText(tmp);
+			add(pf_reg_pass, Integer.valueOf(2));
+			remove(tf_reg_pass);
+		}
+		
+		if(btn == btn_reg_show) {
+			add(btn_reg_hide, Integer.valueOf(3));
+			remove(btn_reg_show);
+			String tmp = pf_reg_pass.getText();
+			tf_reg_pass.setText(tmp);
+			add(tf_reg_pass, Integer.valueOf(2));
+			remove(pf_reg_pass);
 		}
 		
 	}
