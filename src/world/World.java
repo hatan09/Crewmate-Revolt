@@ -5,13 +5,16 @@ import java.awt.Graphics;
 import bullets.Bullet;
 import bullets.BulletController;
 import entities.EntityManager;
+import entities.creatures.Impostor;
 import entities.creatures.Player;
 import entities.statics.Tree;
 import entities.statics.solid.Rock;
+import gfx.ImgAssets;
 import main.Game;
 import main.Handler;
 import tiles.Tile;
 import utils.Utils;
+import wave.WaveManager;
 
 public class World {
 	
@@ -23,16 +26,23 @@ public class World {
 	
 	private Handler handler;
 	
+	private Player player;
+	
 	private int width, height;	//width = number of tiles horizontally, height = number of tiles vertically
 	private int spawnX, spawnY;	//location of player spawning
 	private int[][] map;		//holds id for tile at a single location like map[0][0] = 1, and id of 1 is a grass tile (for ex)
 	
-	private int player_width = 88, player_height = 133;
-	//private int player_width = 59, player_height = 86; //this is the size of player's image
+	public static final int PLAYER_WIDTH = 88, PLAYER_HEIGHT = 133;		//this is the size of player's image and impostors' images
+	
+	public static final int BOSS_WIDTH = 264, BOSS_HEIGHT = 399;		//this is the size of boss's image
+	
+	//these sizes are different from the size on the spritesheet
 	
 	private Tree tree1;
 	
 	private Rock rock1;
+	
+	private Impostor i1, i2, i3, i4;
 	
 	private EntityManager eManager;
 	
@@ -45,7 +55,11 @@ public class World {
 	}
 	
 	public void update() {
+		WaveManager.update();
+		
 		eManager.update();
+		
+		bController.update();
 	}
 	
 	public void render(Graphics g) {		
@@ -113,6 +127,8 @@ public class World {
 			}
 		}
 		eManager.render(g);
+		
+		bController.render(g);
 	}
 	
 	public Tile getTile(int x, int y) {
@@ -147,18 +163,22 @@ public class World {
 	public void reset(String path) {
 		loadWorld(path);
 		
-		eManager = new EntityManager(handler, new Player(handler, spawnX * Tile.TILE_HEIGHT, spawnY * Tile.TILE_HEIGHT, player_width, player_height));
+		player = new Player(handler, spawnX * Tile.TILE_HEIGHT, spawnY * Tile.TILE_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
+		
+		eManager = new EntityManager(handler, player);
 		
 		//eManager.addStaticEntity(bush);
 		
 		tree1 = new Tree(handler, 500, 500, 127, 165);
 		
 		rock1 = new Rock(handler, 1000, 200, 127, 165);
-		
+
 		eManager.addSolidEntity(rock1);
 		eManager.addSolidEntity(tree1);
 		
 		bController = new BulletController(handler);
+		
+		WaveManager.init(10, handler);
 	}
 	
 	
@@ -175,6 +195,11 @@ public class World {
 	public void addBullet(Bullet b) {
 		bController.addBullet(b);
 	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
 
 	public int getSpawnX() {
 		return spawnX;

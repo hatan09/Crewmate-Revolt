@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-
+import data.Gun;
 import gfx.Camera;
 import gfx.ImgAssets;
 import input.KeyManager;
@@ -99,6 +99,9 @@ public class Game implements Runnable {
 		
 		//get all the imgages that needed for the moment
 		ImgAssets.init();
+		
+		//get all guns data
+		Gun.init();
 		
 		gameState = new GameState(handler);
 		mainMenuState = new MainMenuState(handler);

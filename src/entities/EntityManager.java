@@ -42,8 +42,8 @@ public class EntityManager {
 	}
 	
 	public void update() {		
-		for(Entity e : entities) {
-			e.update();
+		for(int i = 0; i < entities.size(); i++) {
+			entities.get(i).update();
 		}
 		entities.sort(renderOrder);
 	}
@@ -102,10 +102,6 @@ public class EntityManager {
 		staticEntities.remove(se);
 		entities.remove(se);
 	}
-	
-	public ArrayList<Creature> getCreatures() {
-		return creatures;
-	}
 
 	public Handler getHandler() {
 		return handler;
@@ -129,6 +125,14 @@ public class EntityManager {
 
 	public ArrayList<SolidEntity> getSolidEntities() {
 		return solidEntities;
+	}
+	
+	public ArrayList<Creature> getCreatures() {
+		return creatures;
+	}
+	
+	public ArrayList<StaticEntity> getStaticEntities() {
+		return staticEntities;
 	}
 	
 }
