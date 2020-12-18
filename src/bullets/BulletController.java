@@ -24,8 +24,8 @@ public class BulletController {
 	}
 	
 	public void update() {
-		for(Bullet b : bullets) {
-			b.update();
+		for(int i = 0; i < bullets.size(); i++) {
+			bullets.get(i).update();
 		}
 	}
 	
@@ -33,5 +33,5 @@ public class BulletController {
 		for(Bullet b : bullets) {
 			b.render(g);
 		}
-	}
+	}	
 }

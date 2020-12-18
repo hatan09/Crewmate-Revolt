@@ -14,7 +14,6 @@ public abstract class Entity {
 	protected int width, height;
 	
 	protected Rectangle box;
-	protected Rectangle hitbox;
 	
 	public Entity(Handler handler, float x, float y, int width, int height) {
 		this.x = x;
@@ -23,8 +22,7 @@ public abstract class Entity {
 		this.height = height;
 		this.handler = handler;
 		
-		box = new Rectangle(0, 0, width, height);
-		hitbox = new Rectangle(0, 0, width, height);
+		box = new Rectangle(0, 0, 0, 0);
 	}
 	
 	public abstract void update();

@@ -1,7 +1,13 @@
 package entities.creatures;
 
 
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+
 import entities.Entity;
+import gfx.Animation;
 import main.Handler;
 import tiles.Tile;
 
@@ -11,22 +17,36 @@ public abstract class Creature extends Entity{
 	public static final float DEFAULT_SPEED = 3.0f;
 	public static final int DEFAULT_CREATURE_WIDTH = 10, DEFAULT_CREATURE_HEIGHT = 10;
 	
+	protected int maxHealth;
 	protected int health;
 	protected float speed;
 	protected float xMove, yMove;
 	protected boolean headingRight = true;
+	protected boolean isMoving = false;
+	
+	protected Rectangle hitbox;
+	
+	protected static final int ANIM_SPD = 78;
+	
+	protected Animation anim_run_left, anim_run_right;
+	
+	protected AffineTransform hand_tx;
+	protected AffineTransformOp hand_op;
 	
 	protected boolean penetrating = false;
 
 	
 	public Creature(Handler handler, float x, float y, int width, int height){
 		super(handler, x, y, width, height);
+		maxHealth = DEFAULT_HEALTH;
 		health = DEFAULT_HEALTH;
 		speed = DEFAULT_SPEED;
+		
+		hitbox = new Rectangle(0, 0, width, height);
 	}
 	
 	public void move() {
-		if(xMove*yMove != 0) {
+		if(xMove != 0 && yMove != 0) {
 			xMove = (float) (xMove/Math.sqrt(2));
 			yMove = (float) (yMove/Math.sqrt(2));
 		}
@@ -103,11 +123,12 @@ public abstract class Creature extends Entity{
 		return false;
 	}
 	
+	public Rectangle getHitBox(float dx, float dy) {
+		return new Rectangle((int) (x + hitbox.x + dx) , (int) (y + hitbox.y + dy), hitbox.width, hitbox.height);
+	}
+	
 	public void takeDmg(int dmg) {
 		health -= dmg;
-		if(health <= 0) {
-			handler.getWorld().geteManager().removeCreature(this);
-		}
 	}
 	
 	public void shoot() {
@@ -115,7 +136,11 @@ public abstract class Creature extends Entity{
 	}
 	
 	public void melee() {
-		
+		System.out.println("Melee");
+	}
+	
+	public BufferedImage getFrame() {
+		return (headingRight)? anim_run_right.getFrame() : anim_run_left.getFrame();
 	}
 	
 	//setter & getter

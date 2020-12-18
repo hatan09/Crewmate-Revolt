@@ -15,7 +15,7 @@ public class ImgAssets {
 	
 	public static BufferedImage menu;
 	
-	public static BufferedImage player_static_left, player_static_right, grass, water, dirt, sand, logo, tree1, gun_right, gun_left;
+	public static BufferedImage player_static_left, player_static_right, grass, water, dirt, sand, logo, tree1, gun_right, gun_left, bullet;
 	
 	
 	public static BufferedImage[] start_btn = new BufferedImage[2], shop_btn = new BufferedImage[2], setting_btn = new BufferedImage[2];
@@ -94,6 +94,9 @@ public class ImgAssets {
 		
 		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/setting_btn_hv.png"));
 		quit_btn[1] = sheet.crop(0, 0, 171, 150);
+		
+		sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/bullet_img.png"));
+		bullet = sheet.crop(0, 0, 40, 40);
 		
 		//sheet = new SpriteSheet(ImageLoader.loadStaticImage("/img/tile.jpg"));
 		//grass = sheet.crop(0, 0, width, height);
