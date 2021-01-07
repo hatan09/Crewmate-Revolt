@@ -6,8 +6,10 @@ Java SE 15 (jdk-15)
 
 # How to use
 1. Require MSSQL (database name: OOP, username: admin@oop_db, pass: Oop123, port: 50631) - remote database, local file save are UNAVAILABLE!
-2. Download the CrewmateRevolt.jar file
-3. Run!
+2. Download and install Java SE 15
+3. Download the CrewmateRevolt.jar file
+4. Run the CrewmateRevolt.jar
+5. Enjoy!
 
 # How to play
 1. Register
