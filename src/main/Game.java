@@ -12,15 +12,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import data.Gun;
+import data.User;
 import gfx.Camera;
 import gfx.ImgAssets;
 import input.KeyManager;
 import input.MouseManager;
-import sound.SoundBackground;
-import sound.SoundEffect;
+import sfx.SoundBackground;
+import sfx.SoundEffect;
 import states.GameState;
 import states.MainMenuState;
 import states.SettingState;
+import states.ShopState;
 import states.State;
 
 public class Game implements Runnable {
@@ -84,7 +86,7 @@ public class Game implements Runnable {
 	//get things ready
 	private void init() {
 		//init new JFrame then show it
-		fr_g = new Frame_Game("Zombie Shooter (Version 1.0.0 - Beta)", new Dimension(width, height));
+		fr_g = new Frame_Game("Crewmate Revolt (Version 1.0.0 - Beta)", new Dimension(width, height));
 		
 		//assign handler
 		handler = Handler.createHandler(this);
@@ -111,43 +113,45 @@ public class Game implements Runnable {
 		//get all guns data
 		Gun.init();
 		
+		//get all player's data
+		User.init();
+		
 		//get all sounds
 		try {
 			SoundEffect.init();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		try {
 			SoundBackground.init();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		gameState = new GameState(handler);
 		mainMenuState = new MainMenuState(handler);
+		shopState = new ShopState(handler);
 		settingState = new SettingState(handler);
 		setMenuState();
 		
 		fr_g.remove(fr_g.waiting);
 		fr_g.add(fr_g.getCanvas());
-		//fr_g.pack();
 		fr_g.revalidate();
 		
-		//idk why but this method must be called 2 times in order to render the logo picture
+		timePerUpdate = 1000000000/update_limit;		//1 (s) = 10^9 (ns)
+		timePerFrame = 1000000000/fps;
+		
+		//idk why but this method must be called 2 times in order to render the logo
 		renderLogo();
 		renderLogo();
 		
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(4000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
-		timePerUpdate = 1000000000/update_limit;		//1 (s) = 10^9 (ns)
-		timePerFrame = 1000000000/fps;
 	}
 
 	//update everything after every frame: update a state, the state will update its components
@@ -209,8 +213,6 @@ public class Game implements Runnable {
 	//main codes
 	public void run() {
 		init();
-		
-		SoundBackground.play();
 		
 		lastTime = System.nanoTime();
 		while(isRunning) {
@@ -283,6 +285,8 @@ public class Game implements Runnable {
 	
 	//call to stop everything
 	public void stopGame() {
+		SoundBackground.stop();
+		User.clearData();
 		isRunning = false;
 	}
 	
@@ -290,11 +294,21 @@ public class Game implements Runnable {
 	public void setGameState() {
 		gameState.reset();
 		State.setState(gameState);
+		try {
+			SoundBackground.playGameMusic();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//change the state to menu
 	public void setMenuState() {
 		State.setState(mainMenuState);
+		try {
+			if(!SoundBackground.isPlaying()) SoundBackground.playMenuMusic();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			e.printStackTrace();
+		}
 	}
 		
 	//change the state to shop

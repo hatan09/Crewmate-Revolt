@@ -7,12 +7,13 @@ import java.awt.Graphics;
 public class UIString extends UIObject{
 	private Font font;
 	private String s = "";
+	private Color color;
 
-	public UIString(float x, float y, int width, int height, Font font) {
+	public UIString(float x, float y, int width, int height, Font font, Color color) {
 		super(x, y, width, height);
 		
 		this.font = font;
-		
+		this.color = color;
 	}
 	
 	public void setString(String s) {
@@ -34,7 +35,7 @@ public class UIString extends UIObject{
 	@Override
 	public void render(Graphics g) {
 		g.setFont(font);
-		g.setColor(Color.black);
+		g.setColor(color);
 		g.drawString(s, (int) x, (int) y);
 	}
 

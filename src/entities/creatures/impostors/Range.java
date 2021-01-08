@@ -24,7 +24,7 @@ public class Range extends Impostor{
 		
 		gun = new Gun(Gun.IMPOSTOR);
 
-		atkRange = 500;
+		atkRange = (int) gun.getRange() / 2;
 		chargeTime = 2000;
 		delayTime = 5000;
 		maxDistance = 1000;

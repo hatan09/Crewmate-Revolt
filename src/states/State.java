@@ -34,7 +34,6 @@ public abstract class State {
 		return _state;
 	}
 	
-	
 	//methods run when changing state
 	public void setUI() {
 		handler.getMouseManager().setUIManager(uiManager);

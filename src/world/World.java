@@ -2,15 +2,19 @@ package world;
 
 import java.awt.Graphics;
 
+import javax.swing.JOptionPane;
+
 import bullets.Bullet;
 import bullets.BulletController;
+import data.Gun;
 import data.User;
 import entities.EntityManager;
 import entities.creatures.Player;
 import entities.creatures.impostors.Impostor;
-import entities.statics.Tree;
 import entities.statics.solid.Rock;
+import entities.statics.solid.Tree;
 import main.Handler;
+import sfx.SoundBackground;
 import tiles.Tile;
 import utils.Utils;
 import wave.WaveManager;
@@ -27,6 +31,8 @@ public class World {
 	
 	private Player player;
 	
+	private Tile tile;
+	
 	private int width, height;	//width = number of tiles horizontally, height = number of tiles vertically
 	private int spawnX, spawnY;	//location of player spawning
 	private int[][] map;		//holds id for tile at a single location like map[0][0] = 1, and id of 1 is a grass tile (for ex)
@@ -39,11 +45,7 @@ public class World {
 	
 	//these sizes are different from the size on the spritesheet
 	
-	private Tree tree1;
-	
-	private Rock rock1;
-	
-	private Impostor i1, i2, i3, i4;
+	private Tree tree1, tree2, tree3, tree4, tree5, tree6, tree7, tree8, tree9, tree10;
 	
 	private EntityManager eManager;
 	
@@ -123,8 +125,8 @@ public class World {
 				//==> to display the map at (x0, y0) we need to set the starting point at (-x0, -y0), then loop to render all the map by adding some tile's width and height
 				//==> x0 = xOffset, y0 = yOffset
 				
-				
-				getTile(x, y).render(g, (int) (x * Tile.TILE_WIDTH - handler.getCamera().getxOffset()), (int) (y * Tile.TILE_HEIGHT - handler.getCamera().getyOffset()));	//getTile: method below
+				tile = getTile(x, y);
+				tile.render(g, (int) (x * Tile.TILE_WIDTH - handler.getCamera().getxOffset()), (int) (y * Tile.TILE_HEIGHT - handler.getCamera().getyOffset()));	//getTile: method below
 			}
 		}
 		eManager.render(g);
@@ -165,21 +167,46 @@ public class World {
 		loadWorld(path);
 		
 		player = new Player(handler, spawnX * Tile.TILE_HEIGHT, spawnY * Tile.TILE_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
+		player.setGuns(Gun.getGunAsID(User.getPriGun()), Gun.getGunAsID(User.getSecGun()));
 		
 		eManager = new EntityManager(handler, player);
 		
-		//eManager.addStaticEntity(bush);
-		
 		tree1 = new Tree(handler, 500, 500, 127, 165);
 		
-		rock1 = new Rock(handler, 1000, 200, 127, 165);
+		tree2 = new Tree(handler, 1000, 200, 127, 165);
+		
+		tree3 = new Tree(handler, 2500, 1000, 127, 165);
+		
+		tree4 = new Tree(handler, 3003, 200, 127, 165);
+		
+		tree5 = new Tree(handler, 4534, 1231, 127, 165);
+		
+		tree6 = new Tree(handler, 5456, 353, 127, 165);
+		
+		tree7 = new Tree(handler, 4687, 543, 127, 165);
+		
+		tree8 = new Tree(handler, 3231, 2340, 127, 165);
+		
+		tree9 = new Tree(handler, 3768, 1021, 127, 165);
+		
+		tree10 = new Tree(handler, 4102, 1828, 127, 165);
 
-		eManager.addSolidEntity(rock1);
 		eManager.addSolidEntity(tree1);
+		eManager.addSolidEntity(tree2);
+		eManager.addSolidEntity(tree3);
+		eManager.addSolidEntity(tree4);
+		eManager.addSolidEntity(tree5);
+		eManager.addSolidEntity(tree6);
+		eManager.addSolidEntity(tree7);
+		eManager.addSolidEntity(tree8);
+		eManager.addSolidEntity(tree9);
+		eManager.addSolidEntity(tree10);
+		
+		//eManager.addStaticEntity(bush);
 		
 		bController = new BulletController(handler);
 		
-		WaveManager.init(20, handler);
+		WaveManager.init(User.getHighestWave(), handler);
 	}
 	
 	public void gameOver() {
@@ -193,8 +220,11 @@ public class World {
 		
 		if(User.getHighestWave() < WaveManager.getWave()) User.setHighestWave(WaveManager.getWave());
 		
-		//User.update();
+		JOptionPane.showMessageDialog(null, "Highest Wave: " + User.getHighestWave() + "\nCurrent wave: " + WaveManager.getWave() + "\nGP earned: " + WaveManager.getGpEarned(), "Game Over!", JOptionPane.INFORMATION_MESSAGE);
 		
+		User.update();
+		
+		SoundBackground.stop();
 		handler.getGame().setMenuState();
 	}
 	

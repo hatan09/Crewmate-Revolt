@@ -6,10 +6,16 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import gfx.Animation;
 import gfx.ImgAssets;
 import main.Handler;
+import sfx.SoundBackground;
+import sfx.SoundEffect;
 import wave.WaveManager;
 
 public class Melee extends Impostor{
@@ -29,8 +35,8 @@ public class Melee extends Impostor{
 		
 		dmg = 10;
 		
-		anim_run_left = new Animation(ANIM_SPD, ImgAssets.player_running_left);
-		anim_run_right = new Animation(ANIM_SPD, ImgAssets.player_running_right);
+		anim_run_left = new Animation(ANIM_SPD, ImgAssets.blue_running_left);
+		anim_run_right = new Animation(ANIM_SPD, ImgAssets.blue_running_right);
 		
 		atkRect = new Rectangle((int) (width / 2 - atkRange), (int) (height / 2 - atkRange), (int) atkRange * 2, (int) atkRange * 2);
 		
@@ -58,6 +64,12 @@ public class Melee extends Impostor{
 	@Override
 	public void atk() {
 		super.atk();
+		
+		try {
+			SoundEffect.playKnife();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			e.printStackTrace();
+		}
 		
 		melee();
 	}
@@ -104,7 +116,7 @@ public class Melee extends Impostor{
 					(int) (double) (atkRect.width * proportion), (int) (double) (atkRect.height * proportion));
 		}
 		
-		g.drawImage((isMoving)? getFrame() : ((headingRight)? ImgAssets.player_static_right : ImgAssets.player_static_left), (int) (x - handler.getCamera().getxOffset()), (int) (y - handler.getCamera().getyOffset()), width, height, null);
+		g.drawImage((isMoving)? getFrame() : ((headingRight)? ImgAssets.blue_static_right : ImgAssets.blue_static_left), (int) (x - handler.getCamera().getxOffset()), (int) (y - handler.getCamera().getyOffset()), width, height, null);
 		
 		super.render(g);
 		

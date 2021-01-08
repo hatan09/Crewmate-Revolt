@@ -11,7 +11,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
+
+import database.SQL_Communication;
 
 public class GUI_Working_Login extends GUI_Login implements ActionListener, MouseListener, ItemListener, KeyListener{
 	
@@ -20,8 +21,6 @@ public class GUI_Working_Login extends GUI_Login implements ActionListener, Mous
 	 * */
 	
 	private static boolean showReg = false;
-	
-	Game _game;
 	
 	public GUI_Working_Login() {
 		btn_login.addActionListener(this);
@@ -101,8 +100,11 @@ public class GUI_Working_Login extends GUI_Login implements ActionListener, Mous
 		JButton btn = (JButton)e.getSource();
 		if(btn == btn_login) {
 			if(checkLogin()) {
+				JOptionPane.showMessageDialog(null, "WELCOME TO CREWMATE's REVOLT!");
+				tf_log_pass.setText("");
+				pf_log_pass.setText("");
 				Main.fr_login.setVisible(false);
-				if(startGame());	//check wether it can start our Game window (main window)
+				if(startGame()) System.out.println("Game is running");;	//check wether it can start our Game window (main window)
 			}
 		}
 		
@@ -134,6 +136,8 @@ public class GUI_Working_Login extends GUI_Login implements ActionListener, Mous
 			pf_log_pass.setText(tmp);
 			add(pf_log_pass, Integer.valueOf(2));
 			remove(tf_log_pass);
+			
+			isLogPassHiden = true;
 		}
 		
 		if(btn == btn_log_show) {
@@ -143,6 +147,12 @@ public class GUI_Working_Login extends GUI_Login implements ActionListener, Mous
 			tf_log_pass.setText(tmp);
 			add(tf_log_pass, Integer.valueOf(2));
 			remove(pf_log_pass);
+			
+			isLogPassHiden = false;
+		}
+		
+		if(btn == btn_go_reg) {
+			Reg();
 		}
 		
 		if(btn == btn_reg_hide) {
@@ -152,6 +162,8 @@ public class GUI_Working_Login extends GUI_Login implements ActionListener, Mous
 			pf_reg_pass.setText(tmp);
 			add(pf_reg_pass, Integer.valueOf(2));
 			remove(tf_reg_pass);
+			
+			isRegPassHiden = true;
 		}
 		
 		if(btn == btn_reg_show) {
@@ -161,26 +173,66 @@ public class GUI_Working_Login extends GUI_Login implements ActionListener, Mous
 			tf_reg_pass.setText(tmp);
 			add(tf_reg_pass, Integer.valueOf(2));
 			remove(pf_reg_pass);
+			
+			isRegPassHiden = false;
 		}
 		
 	}
 	
 	private boolean checkLogin() {
-		if(checkLEmail()) {
-			if(checkLPass()) {
-				return true;
+		String userName = tf_log_acc.getText();
+		String pass = (isLogPassHiden)? pf_log_pass.getText() : tf_log_pass.getText();
+		
+		if(!userName.isEmpty()) {
+			if(!pass.isEmpty()) {
+				if(SQL_Communication.verifyAuthentication(userName, pass)) {
+					return true;
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "WRONG USERNAME OR PASSWORD", "CANNOT LOGIN", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
-			else return false;
+			else {
+				JOptionPane.showMessageDialog(null, "PLEASE PROVIDE PASSWORD", "CANNOT LOGIN", JOptionPane.INFORMATION_MESSAGE);
+			}
 		}
-		else return false;
+		else {
+			JOptionPane.showMessageDialog(null, "PLEASE PROVIDE USERNAME", "CANNOT LOGIN", JOptionPane.INFORMATION_MESSAGE);
+		}
+		return false;
 	}
 	
-	private boolean checkLEmail() {
-		return true;
-	}
-	
-	private boolean checkLPass() {
-		return true;
+	private void Reg() {
+		String name = tf_reg_name.getText();
+		if(name.isEmpty()) name = "Player";
+		String userName = tf_reg_acc.getText();
+		String pass = (isRegPassHiden)? pf_reg_pass.getText() : tf_reg_pass.getText();
+		
+		if(userName.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please provide a USERNAME!", "NULL USERNAME!", JOptionPane.ERROR_MESSAGE);
+		}
+		else {
+			if(SQL_Communication.checkUsername(userName)) {
+				JOptionPane.showMessageDialog(null, "USERNAME duplicated! Choose another!", "DUPLICATED USERNAME", JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				if(pass.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Please provide PASSWORD!", "NULL PASSWORD!", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					if(SQL_Communication.Register(userName, name, pass)) {
+						tf_reg_acc.setText("");
+						tf_reg_pass.setText("");
+						pf_reg_pass.setText("");
+						tf_reg_name.setText("");
+						JOptionPane.showMessageDialog(null, "SUCCESS!");
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Please try again later!", "COULD NOT REGISTER!", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		}
 	}
 	
 	private boolean startGame() {

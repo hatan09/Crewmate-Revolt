@@ -26,8 +26,12 @@ public abstract class WaveManager {
 	private static Random r;
 	
 	public static void init(int wave, Handler handler) {
-		WaveManager.wave = wave;
+		WaveManager.wave = 10 * ((wave - 10) / 10);
+		if(WaveManager.wave < 0) WaveManager.wave = 0;
 		WaveManager.handler = handler;
+		
+		System.out.println(wave);
+		System.out.println(WaveManager.wave);
 		
 		noRange = 0;
 		noMelee = 0;
@@ -38,13 +42,15 @@ public abstract class WaveManager {
 	}
 	
 	public static void nextWave() {
+		System.out.println("Next wave");
 		wave++;
 		
-		boss = (wave%25 == 0);
+		//boss = (wave%25 == 0);
 		
 		noFast = wave / 5;
 		noRange = wave / 20;
 		noMelee = wave / 2 - noFast - noRange;
+		noMelee = (noMelee < 1)? 1 : noMelee;
 		
 		for(int i = 0; i < noMelee; i++) {
 			handler.getWorld().geteManager().addCreature(new Melee(handler, randomX(), randomY(), World.PLAYER_WIDTH, World.PLAYER_HEIGHT));

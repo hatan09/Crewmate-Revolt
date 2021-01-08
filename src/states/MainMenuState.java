@@ -7,6 +7,7 @@ import ui.UIManager;
 
 import gfx.ImgAssets;
 import main.Handler;
+import sfx.SoundBackground;
 
 public class MainMenuState extends State{
 	private int windowW, windowH;
@@ -26,6 +27,7 @@ public class MainMenuState extends State{
 		
 		start = new UIImageButton(windowW / 2 - ImgAssets.start_btn[0].getWidth() / 2, windowH / 2, ImgAssets.start_btn[0].getWidth(), ImgAssets.start_btn[0].getHeight(), ImgAssets.start_btn) {
 			public void onClick() {
+				SoundBackground.stop();
 				handler.getGame().setGameState();
 			}};
 			
@@ -36,7 +38,7 @@ public class MainMenuState extends State{
 		
 		setting = new UIImageButton(windowW / 2 - 306 + 417 + 20, windowH / 2 + ImgAssets.start_btn[0].getHeight() + 20, ImgAssets.setting_btn[0].getWidth(), ImgAssets.setting_btn[0].getHeight(), ImgAssets.setting_btn) {
 			public void onClick() {
-				handler.getGame().setShopState();
+				handler.getGame().setSettingState();
 			}};
 				
 		uiManager.addUIObject(start);

@@ -4,10 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import gfx.Animation;
 import gfx.ImgAssets;
 import main.Handler;
+import sfx.SoundEffect;
 import wave.WaveManager;
 
 public class Fast extends Impostor{
@@ -59,6 +64,12 @@ public class Fast extends Impostor{
 	@Override
 	public void atk() {
 		super.atk();
+		
+		try {
+			SoundEffect.playRoar();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			e.printStackTrace();
+		}
 		
 		melee();
 	}
