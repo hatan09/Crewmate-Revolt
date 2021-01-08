@@ -4,13 +4,12 @@ import java.awt.Graphics;
 
 import bullets.Bullet;
 import bullets.BulletController;
+import data.User;
 import entities.EntityManager;
-import entities.creatures.Impostor;
 import entities.creatures.Player;
+import entities.creatures.impostors.Impostor;
 import entities.statics.Tree;
 import entities.statics.solid.Rock;
-import gfx.ImgAssets;
-import main.Game;
 import main.Handler;
 import tiles.Tile;
 import utils.Utils;
@@ -33,6 +32,8 @@ public class World {
 	private int[][] map;		//holds id for tile at a single location like map[0][0] = 1, and id of 1 is a grass tile (for ex)
 	
 	public static final int PLAYER_WIDTH = 88, PLAYER_HEIGHT = 133;		//this is the size of player's image and impostors' images
+	
+	public static final int FAST_WIDTH = 112, FAST_HEIGHT = 133;		//this is the size of fast runner-impostors' images
 	
 	public static final int BOSS_WIDTH = 264, BOSS_HEIGHT = 399;		//this is the size of boss's image
 	
@@ -62,7 +63,7 @@ public class World {
 		bController.update();
 	}
 	
-	public void render(Graphics g) {		
+	public void render(Graphics g) {
 		int xStart = (int) Math.max(0, handler.getCamera().getxOffset() / Tile.TILE_WIDTH);
 		int xEnd = (int) Math.min(width, (handler.getCamera().getxOffset() + handler.getGameWidth()) / Tile.TILE_WIDTH + 1);
 		int yStart = (int) Math.max(0, handler.getCamera().getyOffset() / Tile.TILE_HEIGHT);
@@ -178,7 +179,23 @@ public class World {
 		
 		bController = new BulletController(handler);
 		
-		WaveManager.init(10, handler);
+		WaveManager.init(20, handler);
+	}
+	
+	public void gameOver() {
+		eManager.cleanUp();
+		
+		User.setFastKill(User.getFastKill() + WaveManager.getFastKill());
+		User.setRangeKill(User.getRangeKill() + WaveManager.getRangeKill());
+		User.setMeleeKill(User.getMeleeKill() + WaveManager.getMeleeKill());
+		
+		User.setGp(User.getGp() + WaveManager.getGpEarned());
+		
+		if(User.getHighestWave() < WaveManager.getWave()) User.setHighestWave(WaveManager.getWave());
+		
+		//User.update();
+		
+		handler.getGame().setMenuState();
 	}
 	
 	

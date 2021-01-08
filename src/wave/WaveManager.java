@@ -2,7 +2,10 @@ package wave;
 
 import java.util.Random;
 
-import entities.creatures.Impostor;
+import entities.creatures.impostors.Fast;
+import entities.creatures.impostors.Impostor;
+import entities.creatures.impostors.Melee;
+import entities.creatures.impostors.Range;
 import main.Handler;
 import tiles.Tile;
 import world.World;
@@ -17,6 +20,7 @@ public abstract class WaveManager {
 	private static int noFast = 0;
 	private static int noBoss = 0;
 	private static int bossKill = 0, meleeKill = 0, fastKill = 0, rangeKill = 0;
+	private static int gpEarned = 0;
 	private static boolean boss = false;
 	
 	private static Random r;
@@ -25,20 +29,33 @@ public abstract class WaveManager {
 		WaveManager.wave = wave;
 		WaveManager.handler = handler;
 		
+		noRange = 0;
+		noMelee = 0;
+		noFast = 0;
+		noBoss = 0;
+		
 		r = new Random();
 	}
 	
 	public static void nextWave() {
 		wave++;
 		
-		boss = (wave%10 == 0);
+		boss = (wave%25 == 0);
 		
-		noFast = 4*(wave/25);
-		noRange = wave/25;
-		noMelee = wave - noFast - noRange;
+		noFast = wave / 5;
+		noRange = wave / 20;
+		noMelee = wave / 2 - noFast - noRange;
 		
 		for(int i = 0; i < noMelee; i++) {
-			handler.getWorld().geteManager().addCreature(new Impostor(handler, randomX(), randomY(), World.PLAYER_WIDTH, World.PLAYER_HEIGHT));
+			handler.getWorld().geteManager().addCreature(new Melee(handler, randomX(), randomY(), World.PLAYER_WIDTH, World.PLAYER_HEIGHT));
+		}
+		
+		for(int i = 0; i < noRange; i++) {
+			handler.getWorld().geteManager().addCreature(new Range(handler, randomX(), randomY(), World.PLAYER_WIDTH, World.PLAYER_HEIGHT));
+		}
+		
+		for(int i = 0; i < noFast; i++) {
+			handler.getWorld().geteManager().addCreature(new Fast(handler, randomX(), randomY(), World.FAST_WIDTH, World.FAST_HEIGHT));
 		}
 		
 	}
@@ -50,16 +67,19 @@ public abstract class WaveManager {
 	public static void removeMelee() {
 		noMelee--;
 		meleeKill++;
+		gpEarned = gpEarned + 3;
 	}
 	
 	public static void removeRange() {
 		noRange--;
 		rangeKill++;
+		gpEarned = gpEarned + 5;
 	}
 	
-	public static void removeRunner() {
+	public static void removeFast() {
 		noFast--;
 		fastKill++;
+		gpEarned = gpEarned + 8;
 	}
 	
 	public static void removeBoss() {
@@ -93,6 +113,22 @@ public abstract class WaveManager {
 
 	public static int getNoRange() {
 		return noRange;
+	}
+
+	public static int getMeleeKill() {
+		return meleeKill;
+	}
+
+	public static int getFastKill() {
+		return fastKill;
+	}
+
+	public static int getRangeKill() {
+		return rangeKill;
+	}
+
+	public static int getGpEarned() {
+		return gpEarned;
 	}
 
 	public static boolean isBoss() {

@@ -4,12 +4,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import data.Gun;
 import gfx.Camera;
 import gfx.ImgAssets;
 import input.KeyManager;
 import input.MouseManager;
+import sound.SoundBackground;
+import sound.SoundEffect;
 import states.GameState;
 import states.MainMenuState;
 import states.SettingState;
@@ -103,10 +111,40 @@ public class Game implements Runnable {
 		//get all guns data
 		Gun.init();
 		
+		//get all sounds
+		try {
+			SoundEffect.init();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			SoundBackground.init();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		gameState = new GameState(handler);
 		mainMenuState = new MainMenuState(handler);
 		settingState = new SettingState(handler);
 		setMenuState();
+		
+		fr_g.remove(fr_g.waiting);
+		fr_g.add(fr_g.getCanvas());
+		//fr_g.pack();
+		fr_g.revalidate();
+		
+		//idk why but this method must be called 2 times in order to render the logo picture
+		renderLogo();
+		renderLogo();
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		timePerUpdate = 1000000000/update_limit;		//1 (s) = 10^9 (ns)
 		timePerFrame = 1000000000/fps;
@@ -142,6 +180,7 @@ public class Game implements Runnable {
 		bs.show();
 		g.dispose();
 
+		
 	}
 	
 	public void renderLogo() {
@@ -164,11 +203,14 @@ public class Game implements Runnable {
 		bs.show();
 		g.dispose();
 		
+		
 	}
 	
 	//main codes
 	public void run() {
 		init();
+		
+		SoundBackground.play();
 		
 		lastTime = System.nanoTime();
 		while(isRunning) {

@@ -54,6 +54,14 @@ public class EntityManager {
 		}
 	}
 	
+	public void cleanUp() {
+		entities.clear();
+		solidEntities.clear();
+		staticEntities.clear();
+		creatures.clear();
+		
+	}
+	
 	
 	//GETTERS & SETTERS
 	

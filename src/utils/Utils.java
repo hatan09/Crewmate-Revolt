@@ -50,4 +50,14 @@ public class Utils {
 	}
 	//end Pathway
 	
+	
+	//encode int
+	public static String encodeInt(int num) {
+		return Integer.toHexString(num * 2);
+	}
+	
+	public static int decodeInt(String s) {
+		return (int) Long.parseLong(s, 16) / 2;
+	}
+	//end encode int
 }

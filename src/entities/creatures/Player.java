@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 import bullets.Bullet;
 import data.Gun;
 import gfx.Animation;
 import gfx.ImgAssets;
+import input.KeyManager;
 import main.Handler;
+import sound.SoundEffect;
 
 public class Player extends Creature{
 	private static final int ANIM_SPD = 78;
@@ -40,8 +43,9 @@ public class Player extends Creature{
 		anim_run_left = new Animation(ANIM_SPD, ImgAssets.player_running_left);
 		anim_run_right = new Animation(ANIM_SPD, ImgAssets.player_running_right);
 		
-		curr = Gun.m4a1;
+		curr = new Gun(Gun.M16);
 		
+		next = new Gun(Gun.DESERT_EAGLE);
 	}
 	
 	public void getInput() {
@@ -75,23 +79,19 @@ public class Player extends Creature{
 		isReloading = handler.getKeyManager().r;
 	}
 	
-	private void rotateHands(int x, int y) {
+	private void rotateHands(double x, double y) {
 		angle = Math.acos(y / Math.sqrt(x*x + y*y));
 		if(headingRight) {
-			hands = ImgAssets.gun_right;
-			//double rotationRequired = Math.toRadians (angle);
 			double rotationRequired = angle;
-			double locationX = hands.getWidth() / 2;
-			double locationY = hands.getHeight() / 2;
+			double locationX = curr.getRight().getWidth() / 2;
+			double locationY = curr.getRight().getHeight() / 2;
 			hand_tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
 			hand_op = new AffineTransformOp(hand_tx, AffineTransformOp.TYPE_BILINEAR);
 		}
 		else {
-			hands = ImgAssets.gun_left;
-			//double rotationRequired = Math.toRadians (angle);
 			double rotationRequired = - angle;
-			double locationX = hands.getWidth() / 2;
-			double locationY = hands.getHeight() / 2;
+			double locationX = curr.getLeft().getWidth() / 2;
+			double locationY = curr.getLeft().getHeight() / 2;
 			hand_tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
 			hand_op = new AffineTransformOp(hand_tx, AffineTransformOp.TYPE_BILINEAR);
 		}
@@ -99,9 +99,15 @@ public class Player extends Creature{
 	
 	public void shoot() {
 		
-		curr.shoot(handler, angle, x ,y ,getWidth(), getHeight(), headingRight, this);
+		curr.shoot(handler, angle, x ,y, width, height, headingRight, this);
 		
 	}
+
+	@Override
+	public void melee() {
+		
+	}
+	
 	
 	public Gun getcurrentGun() {
 		return curr;
@@ -117,6 +123,8 @@ public class Player extends Creature{
 		if(next.equals(gun))
 			next = curr;
 		curr = gun;
+		timer = curr.getDelay();
+		loading = 0;
 	}
 
 	@Override
@@ -124,9 +132,18 @@ public class Player extends Creature{
 		//get mouse & key input
 		getInput();
 		
+		//swap 2 guns
+		if(handler.getKeyManager().q) {
+			swap(next);
+			handler.getKeyManager().q = false;
+		}
+		
 		if(isMoving) {
+			SoundEffect.playStep();
+			
 			anim_run_left.update();
 			anim_run_right.update();
+			
 			if(!penetrating) move();
 			else {
 				x += xMove;
@@ -136,12 +153,16 @@ public class Player extends Creature{
 		else {
 			anim_run_left.reset();
 			anim_run_right.reset();
+			SoundEffect.stopStep();
 		}
 		
+		//check direction
 		headingRight = (mouseX >= x - handler.getCamera().getxOffset() + getWidth() / 2);
 		
-		rotateHands(mouseX - (int) (x - handler.getCamera().getxOffset() + getWidth() / 2), (int) (y - handler.getCamera().getyOffset() + getHeight() / 2 + 5) - mouseY);
+		rotateHands((double) (mouseX - (x - handler.getCamera().getxOffset() + getWidth() / 2)), 
+				    (double) ((y - handler.getCamera().getyOffset() + getHeight() / 2) - mouseY));
 		
+		//atk speed
 		if(timer < curr.getDelay()) {
 			timer += System.currentTimeMillis() - lastTime;
 		}
@@ -149,9 +170,12 @@ public class Player extends Creature{
 			timer = curr.getDelay();
 		}
 		
+		//if there is no ammo left ==> force reload
 		if (!curr.isShootable()) isReloading = true;
 		
+		//if reloading
 		if(isReloading) {
+			//if really need to reload
 			if(curr.getCurrAmmo() < curr.getMaxAmmo()) {
 				loading += System.currentTimeMillis() - lastTime;
 				if(loading >= curr.getReloadTime()) {
@@ -159,10 +183,13 @@ public class Player extends Creature{
 					loading = 0;
 				}
 			}
+			//if full of ammo already ==> cancel reload
 			else isReloading = handler.getKeyManager().r = false;
 		}
+		//if not reloading
 		else {
-			if(isShooting && timer == curr.getDelay() && curr.isShootable()) {
+			//if is shooting and able to shoot
+			if(isShooting && timer == curr.getDelay()) {
 				shoot();
 				timer = 0;
 			}
@@ -182,14 +209,22 @@ public class Player extends Creature{
 		//g.fillRect((int) (x - handler.getCamera().getxOffset() + box.x), (int) (y - handler.getCamera().getyOffset() + box.y), box.width,  box.height);
 		
 		if(hand_op != null && !isReloading)
-			g.drawImage(hand_op.filter(hands, null), 
-					(int) (x - handler.getCamera().getxOffset() - (hands.getWidth() - getWidth()) / 2), (int) (5 + y - handler.getCamera().getyOffset() - (hands.getHeight() - getHeight()) / 2), 
-						hand_op.filter(hands, null).getWidth(),  hand_op.filter(hands, null).getHeight(), null);
+			if(headingRight) {
+				g.drawImage(hand_op.filter(curr.getRight(), null), 
+						(int) (x - handler.getCamera().getxOffset() - (curr.getRight().getWidth() - getWidth()) / 2), 
+						(int) (y - handler.getCamera().getyOffset() - (curr.getRight().getHeight() - getHeight()) / 2), 
+							hand_op.filter(curr.getRight(), null).getWidth(),  hand_op.filter(curr.getRight(), null).getHeight(), null);
+			}
+			else {
+				g.drawImage(hand_op.filter(curr.getLeft(), null), 
+						(int) (x - handler.getCamera().getxOffset() - (curr.getRight().getWidth() - getWidth()) / 2), 
+						(int) (y - handler.getCamera().getyOffset() - (curr.getRight().getHeight() - getHeight()) / 2), 
+							hand_op.filter(curr.getRight(), null).getWidth(),  hand_op.filter(curr.getRight(), null).getHeight(), null);
+			}
 		
 		g.setColor(Color.green);
 		g.fillRect((int) (x - handler.getCamera().getxOffset()), (int) (y - handler.getCamera().getyOffset() - 10), (int) (((double) health / (double) maxHealth) * 100), 10);
 	}
-	
 	
 
 }

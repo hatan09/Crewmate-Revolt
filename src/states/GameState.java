@@ -40,7 +40,7 @@ public class GameState extends State{
 				ImgAssets.quit_btn[0].getWidth(), ImgAssets.quit_btn[0].getHeight(), ImgAssets.quit_btn) {
 			@Override
 			public void onClick() {
-				handler.getGame().setMenuState();
+				handler.getWorld().gameOver();
 			}
 		};
 		
@@ -49,11 +49,11 @@ public class GameState extends State{
 		//UI while playing
 		gameUIManager = new UIManager(handler);
 		
-		ammo = new UIString(1550, 1000, 0, 0, new Font("Arial", Font.BOLD, 50)) {
+		ammo = new UIString(1300, 1000, 0, 0, new Font("Arial", Font.BOLD, 50)) {
 			@Override
 			public void update() {
 				super.update();
-				setString("Ammo: " + handler.getWorld().getPlayer().getcurrentGun().getCurrAmmo() + " / " + handler.getWorld().getPlayer().getcurrentGun().getMaxAmmo());
+				setString(handler.getWorld().getPlayer().getcurrentGun().getName() + " : " + handler.getWorld().getPlayer().getcurrentGun().getCurrAmmo() + " / " + handler.getWorld().getPlayer().getcurrentGun().getMaxAmmo());
 			}
 		};
 		
