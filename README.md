@@ -25,3 +25,7 @@ Java SE 15 (jdk-15)
 - DBMS: MSSQL
 - Tutorial: CodeNMore (Youtube)
 - And other solutions on Stack Overflow
+
+# Configure DBMS info
+- dir = JDBC_Connector -> SQLServer_Connector
+- Modify: user, pass, port
