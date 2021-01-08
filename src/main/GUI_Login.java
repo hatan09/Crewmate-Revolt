@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import gfx.ImageLoader;
 
 public class GUI_Login extends JLayeredPane{
+	protected static boolean isLogPassHiden = true, isRegPassHiden = true;
 	
 	protected static JButton btn_login, btn_reg, btn_lost, btn_log_hide, btn_log_show, btn_reg_hide, btn_reg_show, btn_go_reg;
 	protected static JLabel lbl_welcome, lbl_reg, lbl_background, lbl_acc, lbl_pass, lbl_reg_title, lbl_reg_acc, lbl_reg_name, lbl_reg_pass;
@@ -108,7 +109,7 @@ public class GUI_Login extends JLayeredPane{
 		lbl_reg.setBounds(120, 370, 220, 25);
 		
 		lbl_background = new JLabel();
-		lbl_background.setIcon(ImageLoader.loadAnimatedImage("res\\img\\login_back.gif"));
+		lbl_background.setIcon(ImageLoader.loadAnimatedImage("/img/login_back.gif"));
 		lbl_background.setBounds(0, 0, 650, 500);
 		
 		lbl_acc = new JLabel("Username");
@@ -187,7 +188,7 @@ public class GUI_Login extends JLayeredPane{
 		
 		//******************************************************
 		
-		add(pf_log_pass, Integer.valueOf(2)); add(tf_log_acc,Integer.valueOf(2));
+		add(tf_log_acc,Integer.valueOf(2)); add(pf_log_pass, Integer.valueOf(2));
 		add(lbl_welcome, Integer.valueOf(1)); add(lbl_acc, Integer.valueOf(1)); add(lbl_pass, Integer.valueOf(1)); add(lbl_reg, Integer.valueOf(1)); add(lbl_background, Integer.valueOf(0));
 		add(btn_login, Integer.valueOf(3)); add(btn_lost, Integer.valueOf(3)); add(btn_reg, Integer.valueOf(3)); add(btn_log_show, Integer.valueOf(3));
 		

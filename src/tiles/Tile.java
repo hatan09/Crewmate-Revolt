@@ -14,9 +14,20 @@ public class Tile {
 														This array is used to hold all instances of any type of tile (grass, dirt...) belong with its id. Yes, as long as their types are just Tile
 														
 													 */ 
-	public static Tile grassTile = new GrassTile(0);	//now, tiles[] added grassTile - id = 0
-	public static Tile dirtTile = new DirtTile(1);		//now, tiles[] added dirtTile  - id = 1
-	public static Tile waterTile = new WaterTile(2);	//now, tiles[] added waterTile - id = 2
+//	public static Tile grassTile = new GrassTile(0);	//now, tiles[] added grassTile - id = 0
+//	public static Tile dirtTile = new DirtTile(1);		//now, tiles[] added dirtTile  - id = 1
+//	public static Tile waterTile = new WaterTile(2);	//now, tiles[] added waterTile - id = 2
+	
+	public static Tile dirtTile = new DirtTile(0);
+	public static Tile dirt1Tile = new Dirt1Tile(1);
+	public static Tile dirt2Tile = new Dirt2Tile(2);
+	public static Tile grassTile = new GrassTile(3);
+	public static Tile grass1Tile = new Grass1Tile(4);
+	public static Tile rockTile = new RockTile(5);
+	public static Tile stone1Tile = new Stone1Tile(6);
+	public static Tile waterTile = new WaterTile(7);
+	public static Tile water1Tile = new Water1Tile(8);
+	public static Tile water2Tile = new Water2Tile(9);
 	
 	//public static Tile errorTile = new Tile(new );
 	

@@ -1,7 +1,12 @@
 package main;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
+
+import database.SQL_Communication;
 
 public class Frame_Login extends JFrame{
 	
@@ -15,7 +20,7 @@ public class Frame_Login extends JFrame{
 		r_size = new Dimension(1000, 500);
 		
 		setSizeLog();
-		setTitle("Zombie Shooter - Login");
+		setTitle("Crewmate Revolt - Login");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -23,6 +28,12 @@ public class Frame_Login extends JFrame{
 		pn_login = new GUI_Working_Login();
 		add(pn_login);
 		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+		        // call terminate
+				SQL_Communication.closeConnection();
+		    }
+		});
 	}
 	
 	public void setSizeReg() {

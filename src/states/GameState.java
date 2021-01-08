@@ -1,10 +1,12 @@
 package states;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
 import gfx.ImgAssets;
 import main.Handler;
+import sfx.SoundBackground;
 import ui.UIImageButton;
 import ui.UIManager;
 import ui.UIString;
@@ -36,11 +38,13 @@ public class GameState extends State{
 		//UI when game is paused
 		uiManager = new UIManager(handler);
 
-		quit = new UIImageButton(handler.getGameWidth() / 2 - ImgAssets.quit_btn[0].getWidth() / 2, handler.getGameHeight() / 2 - ImgAssets.quit_btn[0].getHeight(), 
+		quit = new UIImageButton(handler.getGameWidth() / 2 - ImgAssets.quit_btn[0].getWidth() / 2, handler.getGameHeight() / 2 - ImgAssets.quit_btn[0].getHeight() / 2, 
 				ImgAssets.quit_btn[0].getWidth(), ImgAssets.quit_btn[0].getHeight(), ImgAssets.quit_btn) {
 			@Override
 			public void onClick() {
+				SoundBackground.stop();
 				handler.getWorld().gameOver();
+				handler.getGame().setMenuState();
 			}
 		};
 		
@@ -49,7 +53,7 @@ public class GameState extends State{
 		//UI while playing
 		gameUIManager = new UIManager(handler);
 		
-		ammo = new UIString(1300, 1000, 0, 0, new Font("Arial", Font.BOLD, 50)) {
+		ammo = new UIString(1300, 1000, 0, 0, new Font("Arial", Font.BOLD, 50), Color.black) {
 			@Override
 			public void update() {
 				super.update();
@@ -57,7 +61,7 @@ public class GameState extends State{
 			}
 		};
 		
-		amount = new UIString(800, 40, 0, 0, new Font("Arial", Font.BOLD, 50)) {
+		amount = new UIString(900, 40, 0, 0, new Font("Arial", Font.BOLD, 50), Color.black) {
 			@Override
 			public void update() {
 				super.update();
@@ -69,13 +73,13 @@ public class GameState extends State{
 		gameUIManager.addUIObject(amount);
 		
 		//new world
-		world = new World(handler, "res/worlds/world1.txt");
+		world = new World(handler, "/maps/world1.txt");
 		handler.setWorld(world);
 	}
 	
 	public void reset() {
 		handler.getKeyManager().esc = false;
-		world.reset("res/worlds/world1.txt");
+		world.reset("/maps/world1.txt");
 	}
 
 

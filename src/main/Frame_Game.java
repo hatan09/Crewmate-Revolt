@@ -9,11 +9,14 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
+import gfx.ImageLoader;
 
 public class Frame_Game extends JFrame{
 	
@@ -33,12 +36,13 @@ public class Frame_Game extends JFrame{
 	private Cursor cursor;
 	
 	public Frame_Game(String title, Dimension d) {
+		URL url;
+		url = this.getClass().getResource("/img/crosshair2.png");
 		toolkit = Toolkit.getDefaultToolkit();
-		cursorImage = toolkit.getImage("res/img/crosshair2.png");
+		cursorImage = toolkit.getImage(url);
 		cursor = toolkit.createCustomCursor(cursorImage , new Point(this.getX(), this.getY()), "img");
 		
-		ImageIcon spinning = new ImageIcon("res/img/loader.gif");
-		waiting = new JLabel(spinning, JLabel.CENTER);
+		waiting = new JLabel(ImageLoader.loadAnimatedImage("/img/loader.gif"), JLabel.CENTER);
 		
 		this.title = title;
 		setSize(d);

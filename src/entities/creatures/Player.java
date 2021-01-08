@@ -12,7 +12,7 @@ import gfx.Animation;
 import gfx.ImgAssets;
 import input.KeyManager;
 import main.Handler;
-import sound.SoundEffect;
+import sfx.SoundEffect;
 
 public class Player extends Creature{
 	private static final int ANIM_SPD = 78;
@@ -43,7 +43,7 @@ public class Player extends Creature{
 		anim_run_left = new Animation(ANIM_SPD, ImgAssets.player_running_left);
 		anim_run_right = new Animation(ANIM_SPD, ImgAssets.player_running_right);
 		
-		curr = new Gun(Gun.M16);
+		curr = new Gun(Gun.DESERT_EAGLE);
 		
 		next = new Gun(Gun.DESERT_EAGLE);
 	}
@@ -97,10 +97,22 @@ public class Player extends Creature{
 		}
 	}
 	
+	public void setGuns(Gun pri, Gun sec) {
+		curr = next = null;
+		
+		curr = new Gun(pri);
+		next = new Gun(sec);
+	}
+	
 	public void shoot() {
 		
 		curr.shoot(handler, angle, x ,y, width, height, headingRight, this);
-		
+	}
+	
+	@Override
+	public void takeDmg(int dmg) {
+		super.takeDmg(dmg);
+		if(health <= 0) handler.getWorld().gameOver();
 	}
 
 	@Override
@@ -177,6 +189,8 @@ public class Player extends Creature{
 		if(isReloading) {
 			//if really need to reload
 			if(curr.getCurrAmmo() < curr.getMaxAmmo()) {
+				if(loading == 0) curr.playReloadSound();
+				
 				loading += System.currentTimeMillis() - lastTime;
 				if(loading >= curr.getReloadTime()) {
 					reload();

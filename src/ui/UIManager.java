@@ -18,34 +18,39 @@ public class UIManager {
 	}
 	
 	public void addUIObject(UIObject o) {
-		objects.add(o);
+		if(!objects.contains(o)) objects.add(o);
 	}
 	
 	public void removeUIObject(UIObject o) {
 		objects.remove(o);
 	}
 	
+	
+	public boolean contains(UIObject o) {
+		return objects.contains(o);
+	}
+	
 	public void update() {
-		for(UIObject o : objects) {
-			o.update();
+		for(int i = 0; i < objects.size(); i++) {
+			objects.get(i).update();
 		}
 	}
 	
 	public void render(Graphics g) {
-		for(UIObject o : objects) {
-			o.render(g);
+		for(int i = 0; i < objects.size(); i++) {
+			objects.get(i).render(g);
 		}
 	}
 	
 	public void onMouseMove(MouseEvent e) {
-		for(UIObject o : objects) {
-			o.onMouseMove(e);
+		for(int i = 0; i < objects.size(); i++) {
+			objects.get(i).onMouseMove(e);
 		}
 	}
 	
 	public void onMouseRelease(MouseEvent e) {
-		for(UIObject o : objects) {
-			o.onMouseRelease(e);
+		for(int i = 0; i < objects.size(); i++) {
+			objects.get(i).onMouseRelease(e);
 		}
 	}
 }

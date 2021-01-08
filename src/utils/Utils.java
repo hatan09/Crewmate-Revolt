@@ -1,7 +1,7 @@
 package utils;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 
 public class Utils {
 
@@ -12,7 +12,7 @@ public class Utils {
 		StringBuilder strBuilder = new StringBuilder();
 		
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(path));
+			BufferedReader br = new BufferedReader(new InputStreamReader(Utils.class.getResourceAsStream(path)));
 			String line;
 			while((line = br.readLine()) != null) {
 				strBuilder.append(line + "\n");
