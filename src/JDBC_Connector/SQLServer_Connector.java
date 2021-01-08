@@ -15,17 +15,17 @@ public class SQLServer_Connector {
 	
 	//#1
     public static Connection getJDBCConnection() {
+        // Load SQL Server JDBC driver and establish connection.
+        System.out.print("Connecting to SQL Server ... ");
         try {
-            // Load SQL Server JDBC driver and establish connection.
-            System.out.print("Connecting to SQL Server ... ");
-            try (Connection connection = DriverManager.getConnection(url + ip + ":" + port,user,pass)) {
-                	System.out.println("Done.");
-            }
+        	Connection connection = DriverManager.getConnection(url + ip + "\\SQLExpress;databaseName=OOP;portNumber=" + port, user, pass);
+            System.out.println("Done.");
+            return connection;
         }
         catch (Exception e) {
         	System.out.println();
         	e.printStackTrace();
-        }
+		}
         return null;
     }
     

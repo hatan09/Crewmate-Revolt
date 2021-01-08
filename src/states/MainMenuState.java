@@ -9,11 +9,8 @@ import gfx.ImgAssets;
 import main.Handler;
 
 public class MainMenuState extends State{
-	private int mouseX, mouseY;
 	private int windowW, windowH;
 	private int backgoundW = ImgAssets.menu.getWidth(), backgroundH = ImgAssets.menu.getHeight();
-	private long lastTime = 0;
-	private long timer;
 	
 	private UIImageButton start, shop, setting;
 	
@@ -47,16 +44,6 @@ public class MainMenuState extends State{
 		uiManager.addUIObject(setting);
 		
 		setUI();
-		
-		//idk why but this method must be called 2 times in order to render the logo picture
-		handler.getGame().renderLogo();
-		handler.getGame().renderLogo();
-		
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void setUI() {

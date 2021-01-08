@@ -15,16 +15,18 @@ public abstract class Creature extends Entity{
 
 	public static final int DEFAULT_HEALTH = 100;
 	public static final float DEFAULT_SPEED = 3.0f;
-	public static final int DEFAULT_CREATURE_WIDTH = 10, DEFAULT_CREATURE_HEIGHT = 10;
 	
 	protected int maxHealth;
 	protected int health;
+	protected int dmg;
 	protected float speed;
 	protected float xMove, yMove;
 	protected boolean headingRight = true;
 	protected boolean isMoving = false;
 	
-	protected Rectangle hitbox;
+	protected Rectangle hitBox;
+	
+	protected Rectangle atkRect;
 	
 	protected static final int ANIM_SPD = 78;
 	
@@ -42,7 +44,9 @@ public abstract class Creature extends Entity{
 		health = DEFAULT_HEALTH;
 		speed = DEFAULT_SPEED;
 		
-		hitbox = new Rectangle(0, 0, width, height);
+		box.setBounds(15, 60, 57, 57);
+		
+		hitBox = new Rectangle(0, 0, width, height);
 	}
 	
 	public void move() {
@@ -116,34 +120,29 @@ public abstract class Creature extends Entity{
 	
 	public boolean checkEntityCollision(float dx, float dy) {
 		for(Entity e : handler.getWorld().geteManager().getSolidEntities()) {
-			if(e.equals(this)) continue;
-			
 			if(e.getCollisionBox(0f, 0f).intersects(getCollisionBox(dx, dy))) return true;
 		}
 		return false;
 	}
 	
 	public Rectangle getHitBox(float dx, float dy) {
-		return new Rectangle((int) (x + hitbox.x + dx) , (int) (y + hitbox.y + dy), hitbox.width, hitbox.height);
+		return new Rectangle((int) (x + hitBox.x + dx) , (int) (y + hitBox.y + dy), hitBox.width, hitBox.height);
 	}
 	
 	public void takeDmg(int dmg) {
 		health -= dmg;
+		if(health <= 0) handler.getWorld().geteManager().removeCreature(this);
 	}
 	
-	public void shoot() {
-		
-	}
+	public abstract void shoot();
 	
-	public void melee() {
-		System.out.println("Melee");
-	}
-	
+	public abstract void melee();
+
 	public BufferedImage getFrame() {
 		return (headingRight)? anim_run_right.getFrame() : anim_run_left.getFrame();
 	}
 	
-	//setter & getter
+	//GETTERS & SETTERS
 	
 	public int getHealth() {
 		return health;

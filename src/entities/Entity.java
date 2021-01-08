@@ -9,7 +9,6 @@ import main.Handler;
 public abstract class Entity {
 
 	protected Handler handler;	//this is used to get access to game's KeyListener, Camera
-	protected BufferedImage hands;
 	protected float x, y;
 	protected int width, height;
 	

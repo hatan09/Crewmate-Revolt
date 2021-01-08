@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
 
 public class Frame_Login extends JFrame{
@@ -34,3 +33,4 @@ public class Frame_Login extends JFrame{
 		setSize(d_size);
 	}
 }
+

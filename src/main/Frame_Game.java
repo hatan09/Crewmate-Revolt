@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -9,7 +10,9 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class Frame_Game extends JFrame{
@@ -22,6 +25,7 @@ public class Frame_Game extends JFrame{
 
 	private String title;
 	private Canvas canvas;
+	public JLabel waiting;
 	
 	//toolkit
 	private Toolkit toolkit;
@@ -32,6 +36,9 @@ public class Frame_Game extends JFrame{
 		toolkit = Toolkit.getDefaultToolkit();
 		cursorImage = toolkit.getImage("res/img/crosshair2.png");
 		cursor = toolkit.createCustomCursor(cursorImage , new Point(this.getX(), this.getY()), "img");
+		
+		ImageIcon spinning = new ImageIcon("res/img/loader.gif");
+		waiting = new JLabel(spinning, JLabel.CENTER);
 		
 		this.title = title;
 		setSize(d);
@@ -55,13 +62,14 @@ public class Frame_Game extends JFrame{
 		    }
 		});
 		canvas = new Canvas();
+		canvas.setBackground(Color.white);
 		canvas.setPreferredSize(getSize());
 		canvas.setMaximumSize(getSize());
 		canvas.setMinimumSize(getSize());
 		canvas.setFocusable(false);
 		
-		add(canvas);
-		pack();
+		//add(canvas); 
+		add(waiting);
 		
 		setVisible(true);
 		
@@ -94,7 +102,7 @@ public class Frame_Game extends JFrame{
 		canvas.setMinimumSize(getSize());
 		Main.game.setHeight(getHeight());
 		Main.game.setWidth(getWidth());
-		pack();
+		//pack();
 	}
 	
 	public Canvas getCanvas () {

@@ -17,9 +17,9 @@ public class KeyManager implements KeyListener{
 	 * 		and perform the approriate controls
 	 * */
 	
-	private int upNum = KeyEvent.VK_W, downNum = KeyEvent.VK_S, leftNum = KeyEvent.VK_A, rightNum = KeyEvent.VK_D ,escNum = KeyEvent.VK_ESCAPE, rNum = KeyEvent.VK_R;
+	private int upNum = KeyEvent.VK_W, downNum = KeyEvent.VK_S, leftNum = KeyEvent.VK_A, rightNum = KeyEvent.VK_D ,escNum = KeyEvent.VK_ESCAPE, rNum = KeyEvent.VK_R, qNum = KeyEvent.VK_Q;
 	private boolean[] keys;
-	public boolean up, down, left, right, esc, r;
+	public boolean up, down, left, right, esc, r, q;
 	
 	
 	public KeyManager() {
@@ -58,6 +58,7 @@ public class KeyManager implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		keys[e.getKeyCode()] = false;
 		if(e.getKeyCode() == rNum) r = true;
+		if(e.getKeyCode() == qNum) q = true;
 		if(e.getKeyCode() == escNum) {
 			esc = !esc;
 		}
