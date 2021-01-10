@@ -1,5 +1,6 @@
 # Crewmate-Revolt
 This is a small 2D tile based Java game for OOP project using Among Us crewmates charaters. Not for commercial purposes!
+This is our report: https://drive.google.com/file/d/1-Kqgy84RFtqYZ0P_3uHroPOXqWfCw4EN/view?usp=sharing
 
 # Dependencies
 Java SE 15 (jdk-15)
